@@ -37,7 +37,7 @@ resource "google_cloud_run_v2_service" "main" {
       max_instance_count = 3
     }
     containers {
-      image = "asia-east1-docker.pkg.dev/coherent-bliss-386617/cloud-run-source-deploy/python-gcp-linebot/python-gcp-linebot:latest"
+      image = "asia-east1-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/python-gcp-linebot/python-gcp-linebot:latest"
       resources {
         limits = {
           "memory" : "2Gi",
