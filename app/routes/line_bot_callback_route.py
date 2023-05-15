@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Header, Request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from starlette.exceptions import HTTPException
 from app import config
 from app.facades.chatgpt import ChatGPT
@@ -38,5 +38,7 @@ def handle_message(event):
         return
     message = TextMessage(text=event.message.text)
 
-    line_bot_api.reply_message(event.reply_token, "考え中だよ...!")
-    line_bot_api.reply_message(event.reply_token, chat.request(message))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="考え中だよ...!"))
+    line_bot_api.reply_message(
+        event.reply_token, TextSendMessage(text=chat.request(message))
+    )
