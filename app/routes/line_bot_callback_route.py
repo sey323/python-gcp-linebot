@@ -3,14 +3,14 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage
 from starlette.exceptions import HTTPException
-import os
-
 from app import config
+from app.facades.chatgpt import ChatGPT
 
 
 line_bot_callback_router = APIRouter(prefix="", tags=["line_bot"])
 line_bot_api = LineBotApi(config.LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(config.LINE_CHANNEL_SECRET)
+chat = ChatGPT()
 
 
 @line_bot_callback_router.post("/callback")
@@ -37,4 +37,6 @@ def handle_message(event):
     if event.type != "message" or event.message.type != "text":
         return
     message = TextMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, message)
+
+    line_bot_api.reply_message(event.reply_token, "考え中だよ...!")
+    line_bot_api.reply_message(event.reply_token, chat.request(message))
