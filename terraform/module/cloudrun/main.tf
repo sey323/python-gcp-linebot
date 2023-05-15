@@ -18,6 +18,10 @@ variable "line_channel_access_token_id" {
   type = string
 }
 
+variable "openai_api_key_id" {
+  type = string
+}
+
 variable "latest_tag" {
   type = string
 }
@@ -58,6 +62,15 @@ resource "google_cloud_run_v2_service" "main" {
         value_source {
           secret_key_ref {
             secret  = var.line_channel_access_token_id
+            version = "latest"
+          }
+        }
+      }
+      env {
+        name = "OPENAI_API_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = var.openai_api_key_id
             version = "latest"
           }
         }

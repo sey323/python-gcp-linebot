@@ -26,6 +26,7 @@ module "secretmanager" {
   github_token              = data.external.env.result["github_token"]
   line_channel_access_token = data.external.env.result["line_channel_access_token"]
   line_channel_secret       = data.external.env.result["line_channel_secret"]
+  openai_api_key            = data.external.env.result["openai_api_key"]
 }
 
 module "artifactregistory" {
@@ -53,5 +54,6 @@ module "cloudrun" {
   region                       = var.region
   line_channel_secret_id       = module.secretmanager.line_channel_secret_id
   line_channel_access_token_id = module.secretmanager.line_channel_access_token_id
+  openai_api_key_id            = module.secretmanager.openai_api_key_id
   latest_tag                   = "latest"
 }
