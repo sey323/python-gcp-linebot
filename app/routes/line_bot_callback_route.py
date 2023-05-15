@@ -38,7 +38,6 @@ def handle_message(event):
         return
     message = TextMessage(text=event.message.text)
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="考え中だよ...!"))
     line_bot_api.reply_message(
         event.reply_token, TextSendMessage(text=chat.request(message.text))
     )
