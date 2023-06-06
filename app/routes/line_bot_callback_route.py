@@ -11,6 +11,7 @@ from linebot.models import (
 from starlette.exceptions import HTTPException
 from app import config
 from app.facades.chatgpt import ChatGPT
+from app.services.report.entry_user_report_service import add_report
 
 
 line_bot_callback_router = APIRouter(prefix="", tags=["line_bot"])
@@ -40,12 +41,19 @@ async def callback(
 
 @handler.add(MessageEvent)
 def handle_message(event):
-    if event.type != "message" or event.message.type != "text":
-        return
-    message = TextMessage(text=event.message.text)
+
+    text = None
+
+    if event.type == "message" and event.message.type == "location":
+        save_location(event)
+        text = "救援を承りました"
+    elif event.type != "message" or event.message.type != "text":
+        text = None
+    else:
+        text = event.message.text
 
     line_bot_api.reply_message(
-        event.reply_token, messages=create_message(message.text)
+        event.reply_token, messages=create_message(text)
     )
 
 
@@ -55,9 +63,15 @@ def create_message(msg: str | None):
             QuickReplyButton(action=LocationAction(label="location")),
         ]
         return [
-            TextSendMessage(text="救援を承りました。"),
-            TextSendMessage(text="位置情報を送信する。",
+            TextSendMessage(text="救援を承りました"),
+            TextSendMessage(text="被害の発生した場所を教えてください",
                             quick_reply=QuickReply(items=reply))
         ]
-    else:
+    elif msg is not None:
         return TextSendMessage(text=chat.request(msg))
+    else:
+        return TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
+
+
+def save_location(event):
+    add_report(event.message.latitude, event.message.longitude)

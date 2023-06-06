@@ -45,6 +45,28 @@ async def execute(
     return id
 
 
+def add_report(
+    latitude: float, longitude: float
+) -> str:
+    id = generate_id_str()
+
+    user_report_model: UserReportModel = UserReportModel.parse_obj(
+        {
+            "location": {
+                "latitude": latitude,
+                "longitude": longitude,
+            },
+            "user_report_id": id,
+            "report_level": ReportLevel.MIDDLE,
+            "report_status": ReportStatus.NO_ASSIGN,
+            "created_at": now(),
+            "image_url": None
+        },
+    )
+    user_report.add_user_report(id, user_report_model)
+    return id
+
+
 async def _upload_thumbnail_image(id: str, file: UploadFile) -> str:
     """pdfからサムネイル画像を生成しGoogle Cloud Storageに保存する"""
     thumbnail_filename = f"{id}.jpeg"
