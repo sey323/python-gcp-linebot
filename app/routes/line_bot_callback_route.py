@@ -45,17 +45,19 @@ def handle_message(event):
     message = TextMessage(text=event.message.text)
 
     line_bot_api.reply_message(
-        event.reply_token, create_message(message.text)
+        event.reply_token, messages=create_message(message.text)
     )
 
 
 def create_message(msg: str | None):
     if msg == "救援を要請する":
         reply = [
-            TextMessage(text="救援要請を受け付けました。"),
             QuickReplyButton(action=LocationAction(label="location")),
         ]
-        return TextSendMessage(text="位置情報を送信する。",
-                               quick_reply=QuickReply(items=reply))
+        return [
+            TextSendMessage(text="救援を承りました。"),
+            TextSendMessage(text="位置情報を送信する。",
+                            quick_reply=QuickReply(items=reply))
+        ]
     else:
         return TextSendMessage(text=chat.request(msg))
