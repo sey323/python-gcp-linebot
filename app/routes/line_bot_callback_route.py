@@ -45,8 +45,8 @@ def handle_message(event):
     text = None
 
     if event.type == "message" and event.message.type == "location":
-        save_location(event)
-        text = "救援を承りました"
+        # save_location(event)
+        text = "救援要請を受け付けました"
     elif event.type != "message" or event.message.type != "text":
         text = None
     else:
