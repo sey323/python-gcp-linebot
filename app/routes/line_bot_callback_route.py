@@ -85,6 +85,6 @@ def create_message(msg: str | None):
 def save_location(event):
     return add_report(
         # sha256でユーザーIDをハッシュ化
-        hashlib.sha256(event.source.user_id).hexdigest(),
+        hashlib.sha256(event.source.user_id.encode()).hexdigest(),
         event.message.latitude, 
         event.message.longitude)
