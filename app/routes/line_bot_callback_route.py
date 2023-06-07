@@ -3,11 +3,13 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent,
-    TextMessage,
     TextSendMessage,
     QuickReply,
     QuickReplyButton,
-    LocationAction)
+    LocationAction,
+    URIAction,
+    MessageAction
+    )
 from starlette.exceptions import HTTPException
 from app import config
 from app.facades.chatgpt import ChatGPT
@@ -45,8 +47,12 @@ def handle_message(event):
     reply = None
 
     if event.type == "message" and event.message.type == "location":
-        # save_location(event)
-        reply = TextSendMessage(text="位置情報の入力を確認しました")
+        id = save_location(event)
+        reply = [
+            TextSendMessage(text="位置情報の入力を確認しました。"),
+            TextSendMessage(text="続いて被害状況を下記のフォームから入力してください。"),
+            TextSendMessage(text=get_liff_url(id))
+        ]
     elif event.type != "message" or event.message.type != "text":
         reply = TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
     else:
@@ -57,10 +63,14 @@ def handle_message(event):
     )
 
 
+def get_liff_url(id: str) -> str:
+    return f"https://liff.line.me/1661252954-Gl9zJ1wY/?report_id={id}"
+
+
 def create_message(msg: str | None):
     if msg == "救援を要請する":
         reply = [
-            QuickReplyButton(action=LocationAction(label="location")),
+            QuickReplyButton(action=LocationAction(label="位置情報を送信する")),
         ]
         return [
             TextSendMessage(text="救援要請を受け付けました"),
@@ -74,4 +84,4 @@ def create_message(msg: str | None):
 
 
 def save_location(event):
-    add_report(event.message.latitude, event.message.longitude)
+    return add_report(event.message.latitude, event.message.longitude)
