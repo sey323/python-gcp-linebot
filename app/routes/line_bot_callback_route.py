@@ -12,6 +12,7 @@ from starlette.exceptions import HTTPException
 from app import config
 from app.facades.chatgpt import ChatGPT
 from app.services.report.entry_user_report_service import add_report
+import hashlib
 
 
 line_bot_callback_router = APIRouter(prefix="", tags=["line_bot"])
@@ -83,6 +84,7 @@ def create_message(msg: str | None):
 
 def save_location(event):
     return add_report(
-        event.source.user_id,
+        # sha256でユーザーIDをハッシュ化
+        hashlib.sha256(event.source.user_id).hexdigest(),
         event.message.latitude, 
         event.message.longitude)
