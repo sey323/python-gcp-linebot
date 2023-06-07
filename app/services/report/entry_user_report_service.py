@@ -3,6 +3,7 @@ from typing import Optional, Union
 from fastapi import UploadFile
 from app.facades.storage import thumbnail
 from app.models.user_report.domain import (
+    Location,
     ReportLevel,
     ReportStatus,
     UserReportModel,
@@ -52,10 +53,7 @@ def add_report(
 
     user_report_model: UserReportModel = UserReportModel.parse_obj(
         {
-            "location": {
-                "latitude": latitude,
-                "longitude": longitude,
-            },
+            "location": Location(latitude=latitude, longitude=longitude),
             "user_report_id": id,
             "report_level": ReportLevel.MIDDLE,
             "report_status": ReportStatus.NO_ASSIGN,
