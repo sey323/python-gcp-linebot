@@ -47,6 +47,7 @@ async def execute(
 
 
 def add_report(
+    user_id: str,
     latitude: float,
     longitude: float
 ) -> str:
@@ -54,7 +55,7 @@ def add_report(
 
     user_report_model: UserReportModel = UserReportModel.parse_obj(
         {
-            "user_id": "test_user_id",  # TODO: 仮の値を入れている
+            "user_id": user_id,  # TODO: 仮の値を入れている
             "user_report_id": id,
             "location": Location(latitude=latitude, longitude=longitude),
             "content": '',

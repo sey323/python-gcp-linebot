@@ -7,8 +7,6 @@ from linebot.models import (
     QuickReply,
     QuickReplyButton,
     LocationAction,
-    URIAction,
-    MessageAction
     )
 from starlette.exceptions import HTTPException
 from app import config
@@ -84,4 +82,7 @@ def create_message(msg: str | None):
 
 
 def save_location(event):
-    return add_report(event.message.latitude, event.message.longitude)
+    return add_report(
+        event.source.user_id,
+        event.message.latitude, 
+        event.message.longitude)
