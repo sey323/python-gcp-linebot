@@ -45,8 +45,8 @@ def handle_message(event):
     reply = None
 
     if event.type == "message" and event.message.type == "location":
-        save_location(event)
-        reply = TextSendMessage(text="救援要請を受け付けました")
+        # save_location(event)
+        reply = TextSendMessage(text="位置情報の入力を確認しました")
     elif event.type != "message" or event.message.type != "text":
         reply = TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
     else:
@@ -63,7 +63,7 @@ def create_message(msg: str | None):
             QuickReplyButton(action=LocationAction(label="location")),
         ]
         return [
-            TextSendMessage(text="救援を承りました"),
+            TextSendMessage(text="救援要請を受け付けました"),
             TextSendMessage(text="被害の発生した場所を教えてください",
                             quick_reply=QuickReply(items=reply))
         ]
