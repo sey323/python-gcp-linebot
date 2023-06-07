@@ -42,18 +42,18 @@ async def callback(
 @handler.add(MessageEvent)
 def handle_message(event):
 
-    text = None
+    reply = None
 
     if event.type == "message" and event.message.type == "location":
-        # save_location(event)
-        text = "救援要請を受け付けました"
+        save_location(event)
+        reply = TextSendMessage(text="救援要請を受け付けました")
     elif event.type != "message" or event.message.type != "text":
-        text = None
+        reply = TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
     else:
-        text = event.message.text
+        reply = create_message(event.message.text)
 
     line_bot_api.reply_message(
-        event.reply_token, messages=create_message(text)
+        event.reply_token, messages=reply
     )
 
 
