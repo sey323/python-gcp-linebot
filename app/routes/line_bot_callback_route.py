@@ -47,8 +47,8 @@ def handle_message(event):
     if event.type == "message" and event.message.type == "location":
         id = save_location(event)
         reply = [
-            TextSendMessage(text="位置情報の入力を確認しました。"),
-            TextSendMessage(text="続いて被害状況を下記のフォームから入力してください。"),
+            TextSendMessage(text="位置情報の入力を確認しました"),
+            TextSendMessage(text="続いて被害状況を下記のフォームから入力してください"),
             TextSendMessage(text=get_liff_url(id))
         ]
     elif event.type != "message" or event.message.type != "text":
