@@ -55,7 +55,7 @@ def handle_message(event):
     else:
         reply = create_message(event.message.text)
 
-    line_message.reply_message(event.reply_token, messages=reply)
+    line_message.reply_message(event.reply_token, reply)
 
 
 def get_liff_url(id: str) -> str:

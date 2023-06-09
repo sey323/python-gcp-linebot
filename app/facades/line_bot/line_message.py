@@ -2,7 +2,7 @@ from app.facades.line_bot import line_bot_api
 from linebot.models import SendMessage
 
 
-def reply_message(reply_token, message: SendMessage):
+def reply_message(reply_token, message):
     """メッセージを返信
 
     Args:
