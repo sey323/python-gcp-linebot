@@ -13,7 +13,6 @@ from app import config
 from app.facades.chatgpt import ChatGPT
 from app.facades.line_bot import line_message
 from app.services.report.entry_user_report_service import add_report
-from app.facades.line_bot import line_bot_api
 
 
 line_bot_callback_router = APIRouter(prefix="", tags=["line_bot"])
@@ -56,7 +55,7 @@ def handle_message(event):
     else:
         reply = create_message(event.message.text)
 
-    line_bot_api.reply_message(event.reply_token, reply)
+    line_message.reply_message(event.reply_token, reply)
 
 
 def get_liff_url(id: str) -> str:
