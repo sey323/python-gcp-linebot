@@ -7,6 +7,7 @@ from linebot.models import (
     QuickReply,
     QuickReplyButton,
     LocationAction,
+    ButtonsTemplate,
 )
 from starlette.exceptions import HTTPException
 from app import config
@@ -47,7 +48,23 @@ def handle_message(event):
         id = save_location(event)
         reply = [
             TextSendMessage(text="位置情報の入力を確認しました"),
-            TextSendMessage(text="続いて被害状況を下記のフォームから入力してください"),
+            ButtonsTemplate(
+                text="続いて被害状況を下記のフォームから入力するか、周辺の救援要請を確認してください",
+                thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
+                image_background_color="#FFFFFF",
+                actions=[
+                    {
+                        "type": "uri",
+                        "label": "被害状況を入力する",
+                        "uri": get_liff_url(id),
+                    },
+                    {
+                        "type": "uri",
+                        "label": "周辺の救援要請を確認する",
+                        "uri": config.FRONTEND_URL,
+                    },
+                ],
+            ),
             TextSendMessage(text=get_liff_url(id)),
         ]
     elif event.type != "message" or event.message.type != "text":
