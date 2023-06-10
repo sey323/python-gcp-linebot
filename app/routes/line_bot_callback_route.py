@@ -8,6 +8,7 @@ from linebot.models import (
     QuickReplyButton,
     LocationAction,
     ButtonsTemplate,
+    TemplateSendMessage,
 )
 from starlette.exceptions import HTTPException
 from app import config
@@ -46,9 +47,29 @@ def handle_message(event):
 
     if event.type == "message" and event.message.type == "location":
         id = save_location(event)
-        reply = [
-            TextSendMessage(text="位置情報の入力を確認しました"),
-            ButtonsTemplate(
+        reply = create_entry_form_request_message(id)
+    elif event.type != "message" or event.message.type != "text":
+        reply = TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
+    else:
+        reply = create_message(event.message.text)
+
+    line_message.reply_message(event.reply_token, reply)
+
+
+def create_entry_form_request_message(id):
+    """位置情報を申請した後の、詳細アクションの記載を促すメッセージを作成する。
+
+    Args:
+        id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    return [
+        TextSendMessage(text="位置情報の入力を確認しました"),
+        TemplateSendMessage(
+            alt_text="にゃーん",
+            template=ButtonsTemplate(
                 text="続いて被害状況を下記のフォームから入力するか、周辺の救援要請を確認してください",
                 thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
                 image_background_color="#FFFFFF",
@@ -65,14 +86,8 @@ def handle_message(event):
                     },
                 ],
             ),
-            TextSendMessage(text=get_liff_url(id)),
-        ]
-    elif event.type != "message" or event.message.type != "text":
-        reply = TextSendMessage(text="申し訳ありません。入力を受け付けることができませんでした")
-    else:
-        reply = create_message(event.message.text)
-
-    line_message.reply_message(event.reply_token, reply)
+        ),
+    ]
 
 
 def get_liff_url(id: str) -> str:
