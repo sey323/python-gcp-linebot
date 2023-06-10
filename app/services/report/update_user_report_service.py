@@ -7,7 +7,7 @@ from app.models.user_report.update_user_report import (
     UpdateUserReportRequest,
     UpdateUserReportRequestDto,
 )
-from app.repositories import user_report
+from app.repositories import user, user_report
 from app.facades.chatgpt import chatGPT
 from app.utils import now
 
@@ -24,22 +24,27 @@ async def execute(
     Returns:
         str: 更新が完了したユーザレポートのID
     """
+    user_report_model: UserReportModel = user_report.fetch_user_report(
+        id=user_report_id
+    )
 
     if file:
         update_image_url = await _upload_thumbnail_image(
             user_report_id, file=file
         )
     else:
-        user_report_model: UserReportModel = user_report.fetch_user_report(
-            id=user_report_id
-        )
         update_image_url = user_report_model.image_url
+
+    target_user = user.fetch_user(user_report_model.user_id)
+    report_score = target_user.score if target_user else -1
+    # print(report_score)
 
     update_user_report_model: UpdateUserReportRequestDto = (
         UpdateUserReportRequestDto.parse_obj(
             {
                 **request.dict(),
                 **chatGPT.create_report_title(request.content).dict(),
+                "report_score": report_score,
                 "updated_at": now(),
                 "image_url": update_image_url,
             },
