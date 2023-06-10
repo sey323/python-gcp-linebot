@@ -9,6 +9,7 @@ from linebot.models import (
     LocationAction,
     ButtonsTemplate,
     TemplateSendMessage,
+    URIAction,
 )
 from starlette.exceptions import HTTPException
 from app import config
@@ -65,25 +66,25 @@ def create_entry_form_request_message(id):
     Returns:
         _type_: _description_
     """
+    print(config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL)
     return [
         TextSendMessage(text="位置情報の入力を確認しました"),
         TemplateSendMessage(
             alt_text="にゃーん",
             template=ButtonsTemplate(
                 text="続いて被害状況を下記のフォームから入力するか、周辺の救援要請を確認してください",
+                image_size="cover",
                 thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
                 image_background_color="#FFFFFF",
                 actions=[
-                    {
-                        "type": "uri",
-                        "label": "被害状況を入力する",
-                        "uri": get_liff_url(id),
-                    },
-                    {
-                        "type": "uri",
-                        "label": "周辺の救援要請を確認する",
-                        "uri": config.FRONTEND_URL,
-                    },
+                    URIAction(
+                        label="被害状況を入力する",
+                        uri=get_liff_url(id),
+                    ),
+                    URIAction(
+                        label="周辺の救援要請を確認する",
+                        uri=config.FRONTEND_URL,
+                    ),
                 ],
             ),
         ),

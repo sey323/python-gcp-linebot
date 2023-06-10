@@ -29,6 +29,6 @@ GOOGLE_CLOUD_STORAGE_BUCKET_NAME = environ.get(
 
 # 画像パス
 LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL = environ.get(
-    "CRED_PATH",
+    "LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL",
     "https://storage.googleapis.com/myna-safety/system/questions.png",
 )
