@@ -1,5 +1,5 @@
 from typing import List
-from app.models.user_report.domain import UserReportModel
+from app.models.user_report.domain import ReportStatus, UserReportModel
 from app.models.user_report.update_user_report import (
     UpdateUserReportRequestDto,
 )
@@ -80,6 +80,15 @@ def update_user_report(id: str, content: UpdateUserReportRequestDto):
 
     # 新しい差分のある辞書を元のユーザー情報にマージする
     updated_user_report_dict = {**user_report_dict, **patch_dict}
+    db.add(
+        collection=COLLECTION_PREFIX, id=id, content=updated_user_report_dict
+    )
+
+
+def update_user_status(id: str, report_status: ReportStatus):
+    user_report = db.fetch(collection=COLLECTION_PREFIX, id=id)
+    updated_user_report_dict = {**user_report, "report_status": report_status}
+
     db.add(
         collection=COLLECTION_PREFIX, id=id, content=updated_user_report_dict
     )

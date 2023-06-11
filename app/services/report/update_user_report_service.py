@@ -1,4 +1,5 @@
 from io import BytesIO
+from typing import Union
 from fastapi import UploadFile
 from PIL import Image
 from app.facades.storage import thumbnail
@@ -35,9 +36,9 @@ async def execute(
     else:
         update_image_url = user_report_model.image_url
 
+    # マイナ連携済みユーザであればスコアを返す
     target_user = user.fetch_user(user_report_model.user_id)
     report_score = target_user.score if target_user else -1
-    # print(report_score)
 
     update_user_report_model: UpdateUserReportRequestDto = (
         UpdateUserReportRequestDto.parse_obj(
@@ -56,12 +57,18 @@ async def execute(
     return user_report_id
 
 
-async def _upload_thumbnail_image(id: str, file: UploadFile) -> str:
+async def _upload_thumbnail_image(
+    id: str, file: UploadFile
+) -> Union[str, None]:
     """pdfからサムネイル画像を生成しGoogle Cloud Storageに保存する"""
-    thumbnail_filename = f"{id}.jpeg"
-    data = await file.read()
-    img_pil = Image.open(BytesIO(data))
-    image_url = thumbnail.upload(
-        destination_blob_name=thumbnail_filename, image=img_pil
-    )
-    return image_url
+    try:
+        thumbnail_filename = f"{id}.jpeg"
+        data = await file.read()
+        img_pil = Image.open(BytesIO(data))
+        image_url = thumbnail.upload(
+            destination_blob_name=thumbnail_filename, image=img_pil
+        )
+        return image_url
+    except Exception as e:
+        print("画像ファイルの読み込みにし敗しました", e)
+        return None

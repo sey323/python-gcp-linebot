@@ -53,6 +53,25 @@ JSON以外の情報は削除する。
         response_json = self._convert_json(response.content)
         return CreateChatReport.parse_obj(response_json)
 
+    def check_rescore(self, content: str) -> bool:
+        if content == "":
+            return CreateChatReport(
+                title="タイトルなし", report_level=ReportLevel.UnKnown
+            )
+
+        report_title_prompt = [
+            SystemMessage(
+                content="""下記の内容が、書き込んだ人が救援に向かっている文章であるかどうか判定せよ
+戻り値は true/falseのどちらかです。
+デフォルトはfalse"""
+            ),
+        ]
+        report_title_prompt.append(HumanMessage(content=content))
+        response = self.chat(
+            report_title_prompt,
+        )
+        return True if response.content == "true" else False
+
     @staticmethod
     def _convert_json(response: str):
         try:
@@ -62,5 +81,5 @@ JSON以外の情報は削除する。
 
 
 chatGPT = ChatGPT()
-# print(chatGPT.create_report_title("家族と逸れました、洪水の中一人で孤立していて大変です。誰か助けてください"))
-# print(chatGPT.create_report_title("建物は少し損傷していますが、怪我はありません。食糧も確保できています。"))
+# print(chatGPT.check_rescore("救援要請に向かいました"))
+# print(chatGPT.check_rescore("建物は少し損傷していますが、怪我はありません。食糧も確保できています。"))

@@ -13,7 +13,7 @@ def test_put_user():
     request = UpdateUserRequest(pass_phrase="1234")
 
     # create a mock response object
-    line_user_id = "test_line_user_id"
+    line_user_id = "U604309abc8d63179970c2bd130a8862b"
     # expected_response = UpdateUserResponse(line_user_id=line_user_id)
 
     # make the HTTP request
