@@ -57,11 +57,11 @@ async def get_user_reports():
 
 
 __dummy_user_report_router = APIRouter(
-    prefix="/__dummy_report", deprecated=true
+    prefix="/__dummy_report", deprecated=True
 )
 
 
-@__dummy_user_report_router.post("__dummy_post", deprecated=true)
+@__dummy_user_report_router.post("__dummy_post", deprecated=True)
 async def _dummy_post_user_report(
     request: EntryUserReportRequest,
 ):
@@ -69,7 +69,7 @@ async def _dummy_post_user_report(
     pass
 
 
-@__dummy_user_report_router.put("__dummy_put", deprecated=true)
+@__dummy_user_report_router.put("__dummy_put", deprecated=True)
 async def _dummy_put_user_report(
     request: UploadFile,
 ):
