@@ -27,7 +27,7 @@ async def broadcast(
                 text=text,
                 actions=[
                     MessageAction(label="無事です", text="無事です"),
-                    MessageAction(label="救援要請", text="救援を要請する"),
+                    MessageAction(label="救援を要請する", text="救援を要請する"),
                 ],
             ),
         )
