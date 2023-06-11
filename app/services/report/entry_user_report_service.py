@@ -56,6 +56,9 @@ def add_report(user_id: str, latitude: float, longitude: float) -> str:
     id = generate_id_str()
     location = Location(latitude=latitude, longitude=longitude)
 
+    target_user = user.fetch_user(user_id)
+    report_score = target_user.score if target_user else -1
+
     user_report_model: UserReportModel = UserReportModel.parse_obj(
         {
             "user_id": user_id,  # TODO: 仮の値を入れている
@@ -63,6 +66,7 @@ def add_report(user_id: str, latitude: float, longitude: float) -> str:
             "location": location,
             "content": "",
             "image_url": None,
+            "report_score": report_score,
             "address": convert_address(location),
             "report_level": ReportLevel.UnKnown,
             "report_status": ReportStatus.NO_ASSIGN,
