@@ -33,9 +33,8 @@ async def execute(
         target_user_report = user_report.fetch_user_report(report_id)
         text_message = TextSendMessage(
             text=f"""あなたの申告に対してメッセージが追加されました！
-    ----
-    {request.comment}
-    """
+----
+{request.comment}"""
         )
 
         line_message.push_message(

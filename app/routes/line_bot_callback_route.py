@@ -70,6 +70,7 @@ def create_entry_form_request_message(id):
         TextSendMessage(text="位置情報の入力を確認しました"),
         TemplateSendMessage(
             template=ButtonsTemplate(
+                alt_text="詳細情報入力",
                 text="続いて詳細を下記のフォームから入力してください",
                 image_size="cover",
                 thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
