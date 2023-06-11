@@ -36,4 +36,4 @@ def convert_address(location):
     )
     p = address.split(",")
     p.reverse()
-    return ", ".join(p)
+    return ", ".join(p[1:])
