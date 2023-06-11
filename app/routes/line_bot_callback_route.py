@@ -71,7 +71,7 @@ def create_entry_form_request_message(id):
         TemplateSendMessage(
             alt_text="にゃーん",
             template=ButtonsTemplate(
-                text="続いて詳細を下記のフォームから入力するか、周辺の救援要請を確認してください",
+                text="続いて詳細を下記のフォームから入力してください",
                 image_size="cover",
                 thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
                 image_background_color="#FFFFFF",
