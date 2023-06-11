@@ -63,7 +63,7 @@ async def execute(
         target_user_report = user_report.fetch_user_report(
             user_report_model.user_id
         )
-        text_message = TextSendMessage(text="詳細情報を受付ました")
+        text_message = TextSendMessage(text="救援報告の更新が完了しました")
 
         line_message.push_message(
             user_id=target_user_report.user_id, message=text_message

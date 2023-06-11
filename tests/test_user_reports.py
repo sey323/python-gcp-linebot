@@ -59,11 +59,7 @@ def test_put_user_report(mocker, content):
     response = client.put(
         f"/report/{user_report_id}",
         files={
-            # "request": (
-            #     None,
-            #     json.dumps(request_body),
-            # ),
-            "files": {"request": ("data", json.dumps(request_body))},
+            "request": ("data", json.dumps(request_body)),
         },
     )
 
