@@ -69,7 +69,6 @@ def create_entry_form_request_message(id):
     return [
         TextSendMessage(text="位置情報の入力を確認しました"),
         TemplateSendMessage(
-            alt_text="にゃーん",
             template=ButtonsTemplate(
                 text="続いて詳細を下記のフォームから入力してください",
                 image_size="cover",
