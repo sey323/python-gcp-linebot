@@ -29,8 +29,11 @@ def convert_address(location):
     Returns:
         _type_: _description_
     """
-    return (
+    address = (
         Nominatim(user_agent="test")
         .reverse(f"{location.latitude}, {location.longitude}")
         .address
     )
+    p = address.split(",")
+    p.reverse()
+    return ", ".join(p)
