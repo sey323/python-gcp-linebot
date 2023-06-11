@@ -31,6 +31,6 @@ async def broadcast(
                 ],
             ),
         )
-    line_message.broadcast_message(TextSendMessage(text=message))
+    line_message.broadcast_message(message)
 
     return BroadcastResponse(status=200)
