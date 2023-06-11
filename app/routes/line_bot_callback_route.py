@@ -107,6 +107,7 @@ def create_message(msg: str | None):
 
 
 def save_location(event):
+    print(event)
     return add_report(
         # TODO: ハッシュ化すると通知できなくなるので解除
         event.source.user_id,
