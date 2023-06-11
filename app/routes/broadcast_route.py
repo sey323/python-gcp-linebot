@@ -1,25 +1,18 @@
 from fastapi import APIRouter
 from app.facades.line_bot import line_message
-from app.facades.line_bot.line_message import push_message
 from app.models.broadcast.broadcast import BroadcastRequest, BroadcastResponse
 
-from app.models.user.update_user_report import (
-    UpdateUserRequest,
-    UpdateUserResponse,
-)
 from linebot.models import (
     TextSendMessage,
     TemplateSendMessage,
     MessageAction,
     ButtonsTemplate,
 )
-from app.services.user import put_user_service
-from app import config
 
-bloadcast_router = APIRouter(prefix="/bloadcast", tags=["bloadcast"])
+broadcast_router = APIRouter(prefix="/bloadcast", tags=["bloadcast"])
 
 
-@bloadcast_router.post(
+@broadcast_router.post(
     "/",
     response_model=BroadcastResponse,
 )
