@@ -51,7 +51,7 @@ async def put_user_report(
     )
 
     user_id = fetch_user_report(user_report_id).user_id
-    push_message(user_id, TextSendMessage(text="被害状況報告の更新が完了しました"))
+    push_message(user_id, TextSendMessage(text="救援報告の更新が完了しました"))
 
     return UpdateUserReportResponse(user_report_id=user_report_id)
 

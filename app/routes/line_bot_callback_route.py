@@ -71,13 +71,13 @@ def create_entry_form_request_message(id):
         TemplateSendMessage(
             alt_text="にゃーん",
             template=ButtonsTemplate(
-                text="続いて被害状況を下記のフォームから入力するか、周辺の救援要請を確認してください",
+                text="続いて詳細を下記のフォームから入力するか、周辺の救援要請を確認してください",
                 image_size="cover",
                 thumbnail_image_url=config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL,
                 image_background_color="#FFFFFF",
                 actions=[
                     URIAction(
-                        label="被害状況を入力する",
+                        label="詳細を入力する",
                         uri=get_liff_url(id),
                     ),
                     URIAction(
