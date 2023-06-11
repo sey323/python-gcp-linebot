@@ -21,3 +21,11 @@ def push_message(user_id: str, message: SendMessage):
         message (SendMessage): _description_
     """
     line_bot_api.push_message(to=user_id, messages=message)
+
+def broadcast_message(message: SendMessage):
+    """メッセージを送信
+
+    Args:
+        message (SendMessage): _description_
+    """
+    line_bot_api.broadcast(messages=message)

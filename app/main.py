@@ -8,7 +8,7 @@ from .routes.user_report_route import (
 )
 from .routes.user_report_feedback_route import user_report_feedback_router
 from .routes.user_route import user_router
-
+from .routes.broadcast_route import broadcast_router
 
 def get_application() -> FastAPI:
     app = FastAPI(
@@ -26,6 +26,7 @@ def get_application() -> FastAPI:
     app.include_router(user_report_feedback_router)
     app.include_router(line_bot_callback_router)
     app.include_router(__dummy_user_report_router)
+    app.include_router(broadcast_router)
     return app
 
 
