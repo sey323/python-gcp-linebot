@@ -80,10 +80,6 @@ def create_entry_form_request_message(id):
                         label="詳細を入力する",
                         uri=get_liff_url(id),
                     ),
-                    URIAction(
-                        label="周辺の救援要請を確認する",
-                        uri=config.FRONTEND_URL,
-                    ),
                 ],
             ),
         ),
