@@ -1,5 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter, Body, File, UploadFile
+from app.facades.line_bot.line_message import push_message
 from app.models.user_report.list_user_reports import ListUserReportResponse
 from app.models.user_report.entry_user_report import (
     EntryUserReportRequest,
@@ -9,10 +10,14 @@ from app.models.user_report.update_user_report import (
     UpdateUserReportRequest,
     UpdateUserReportResponse,
 )
+from app.repositories.user_report import fetch_user_report
 from app.services.report import (
     entry_user_report_service,
     list_user_report_service,
     update_user_report_service,
+)
+from linebot.models import (
+    TextSendMessage
 )
 
 import json
@@ -45,6 +50,10 @@ async def put_user_report(
     user_report_id = await update_user_report_service.execute(
         user_report_id, userRequest, file
     )
+
+    user_id = fetch_user_report(user_report_id).user_id
+    push_message(user_id, TextSendMessage(text="被害状況報告の更新が完了しました"))
+
     return UpdateUserReportResponse(user_report_id=user_report_id)
 
 
