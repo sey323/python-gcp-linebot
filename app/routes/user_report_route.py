@@ -15,6 +15,8 @@ from app.services.report import (
     update_user_report_service,
 )
 
+import json
+
 user_report_router = APIRouter(prefix="/report", tags=["report"])
 
 
@@ -33,12 +35,14 @@ async def post_user_report(
 )
 async def put_user_report(
     user_report_id: str,
-    request: UpdateUserReportRequest = File(...),
+    request: UploadFile = File(...),
     file: Optional[UploadFile] = File(None),
 ):
     """ユースケース3: ユーザがヘルプ情報を更新する"""
+    json_data = json.loads(request.file.read())
+
     user_report_id = await update_user_report_service.execute(
-        user_report_id, request, file
+        user_report_id, json_data, file
     )
     return UpdateUserReportResponse(user_report_id=user_report_id)
 
