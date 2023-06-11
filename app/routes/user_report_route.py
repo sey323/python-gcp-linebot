@@ -33,7 +33,7 @@ async def post_user_report(
 )
 async def put_user_report(
     user_report_id: str,
-    request: UpdateUserReportRequest = Body(...),
+    request: UpdateUserReportRequest = File(...),
     file: Optional[UploadFile] = File(None),
 ):
     """ユースケース3: ユーザがヘルプ情報を更新する"""
