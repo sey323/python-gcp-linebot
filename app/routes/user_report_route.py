@@ -40,9 +40,10 @@ async def put_user_report(
 ):
     """ユースケース3: ユーザがヘルプ情報を更新する"""
     json_data = json.loads(request.file.read())
+    userRequest = UpdateUserReportRequest.parse_obj(json_data)
 
     user_report_id = await update_user_report_service.execute(
-        user_report_id, json_data, file
+        user_report_id, userRequest, file
     )
     return UpdateUserReportResponse(user_report_id=user_report_id)
 
