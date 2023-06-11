@@ -106,7 +106,7 @@ def list_user_report() -> List[UserReportModel]:
     # 直近100件のみ表示
     user_reports = (
         user_reports_ref.order_by(
-            "report_score", direction=firestore.Query.DESCENDING
+            "created_at", direction=firestore.Query.DESCENDING
         )
         .limit(100)
         .stream()
