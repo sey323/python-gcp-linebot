@@ -11,6 +11,10 @@ from app.models.user_report.update_user_report import (
 from app.repositories import user, user_report
 from app.facades.chatgpt import chatGPT
 from app.utils import now
+from linebot.models import (
+    TextSendMessage,
+)
+from app.facades.line_bot import line_message
 
 
 async def execute(
@@ -53,6 +57,19 @@ async def execute(
     )
 
     user_report.update_user_report(user_report_id, update_user_report_model)
+
+    # レポートの発信者にリプライ
+    try:
+        target_user_report = user_report.fetch_user_report(
+            user_report_model.user_id
+        )
+        text_message = TextSendMessage(text="詳細情報を受付ました")
+
+        line_message.push_message(
+            user_id=target_user_report.user_id, message=text_message
+        )
+    except Exception as e:
+        print(e)
 
     return user_report_id
 

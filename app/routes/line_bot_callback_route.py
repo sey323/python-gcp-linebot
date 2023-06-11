@@ -65,7 +65,6 @@ def create_entry_form_request_message(id):
     Returns:
         _type_: _description_
     """
-    print(config.LINEBOT_ENTRY_FORM_REQEST_THUMBNAIL_URL)
     return [
         TextSendMessage(text="位置情報の入力を確認しました"),
         TemplateSendMessage(
