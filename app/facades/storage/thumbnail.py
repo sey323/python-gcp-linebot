@@ -7,7 +7,7 @@ import app.config as config
 
 FOLDER_NAME = "thumbnail"
 TEMP_FOLDER_NAME = "./temp/thumbnail"
-IMAGE_URL = f"https://storage.cloud.google.com/{config.GOOGLE_CLOUD_STORAGE_BUCKET_NAME}"
+IMAGE_URL = f"https://storage.googleapis.com/{config.GOOGLE_CLOUD_STORAGE_BUCKET_NAME}"
 
 ASPECT_RATIO = 416, 312  # アスペクト比 w:h = 4:3とする
 
