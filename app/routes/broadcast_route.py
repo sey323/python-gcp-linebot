@@ -21,7 +21,7 @@ async def broadcast(
 ):
     """ユーザに安否確認を配信する"""
     text = f"【{request.disaster_name}が発生しました】\n安否確認を行います。\n救援の必要な方は救援申請を実施します。"
-    TemplateSendMessage(
+    message = TemplateSendMessage(
             alt_text="にゃーん",
             template=ButtonsTemplate(
                 text=text,
@@ -30,7 +30,7 @@ async def broadcast(
                     MessageAction(label="救援要請", text="救援を要請する"),
                 ],
             ),
-        ),
-    line_message.broadcast_message(TextSendMessage(text=request.disaster_name))
+        )
+    line_message.broadcast_message(TextSendMessage(text=message))
 
     return BroadcastResponse(status=200)
