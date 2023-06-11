@@ -60,13 +60,10 @@ async def execute(
 
     # レポートの発信者にリプライ
     try:
-        target_user_report = user_report.fetch_user_report(
-            user_report_model.user_id
-        )
         text_message = TextSendMessage(text="救援報告の更新が完了しました")
 
         line_message.push_message(
-            user_id=target_user_report.user_id, message=text_message
+            user_id=user_report_model.user_id, message=text_message
         )
     except Exception as e:
         print(e)
