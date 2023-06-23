@@ -1,4 +1,4 @@
-# Myna Safety Backend
+# Myna Safety
 
 マイナポータルハッカソンのバックエンドです。
 
