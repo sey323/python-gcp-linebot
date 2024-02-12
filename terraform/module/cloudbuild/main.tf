@@ -76,10 +76,12 @@ resource "google_cloudbuild_trigger" "main" {
   ]
 }
 
-# Cloud Build Triggerが完了するまで待機するためのリソース
 resource "null_resource" "wait_for_cloud_build_trigger" {
+  # Cloud Build Trigger作成後、1回実行して、Cloud Runにデプロイする
+
+  depends_on = [google_cloudbuild_trigger.main]
   provisioner "local-exec" {
-    command = "gcloud beta builds triggers run ${google_cloudbuild_trigger.main.name} --branch=${var.repository_branch} --region=${var.region}"
+    command = "gcloud builds triggers run ${google_cloudbuild_trigger.main.name} --branch=${var.repository_branch} --region=${var.region} --quiet"
   }
 
   provisioner "local-exec" {
@@ -94,7 +96,5 @@ EOT
   provisioner "local-exec" {
     command = "gcloud run services delete ${var.repository_name} --platform managed --region ${google_cloudbuild_trigger.main.location} -q"
   }
-
-  depends_on = [google_cloudbuild_trigger.main]
 }
 
