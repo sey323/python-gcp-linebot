@@ -30,15 +30,14 @@ resource "google_cloud_run_v2_service" "main" {
   labels = {
     "managed-by" = "gcp-cloud-build-deploy-cloud-run"
   }
-
   template {
     scaling {
-      min_instance_count = 1
-      max_instance_count = 3
+      max_instance_count = 2
     }
     containers {
       image = "${var.region}-docker.pkg.dev/${var.project_id}/cloud-run-source-deploy/${var.repository_name}/${var.repository_name}:latest"
       resources {
+        cpu_idle = true
         limits = {
           "memory" : "2Gi",
           "cpu" : "1000m"
@@ -65,3 +64,15 @@ resource "google_cloud_run_v2_service" "main" {
     }
   }
 }
+
+# トラフィックを全ユーザから受け付けるための設定
+resource "google_cloud_run_service_iam_member" "member" {
+  project  = var.project_id
+  location = google_cloud_run_v2_service.main.location
+  service  = google_cloud_run_v2_service.main.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+
+  depends_on = [google_cloud_run_v2_service.main]
+}
+
