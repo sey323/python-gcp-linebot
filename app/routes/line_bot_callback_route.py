@@ -3,7 +3,6 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage
 from starlette.exceptions import HTTPException
-import os
 
 from app import config
 
@@ -19,7 +18,7 @@ async def callback(
     background_tasks: BackgroundTasks,
     x_line_signature=Header(None),
 ):
-    """Line Bot用のエンドポイントです"""
+    """Line Bot用のエンドポイント"""
     body = await request.body()
 
     try:
@@ -36,5 +35,6 @@ async def callback(
 def handle_message(event):
     if event.type != "message" or event.message.type != "text":
         return
+    # 受け取ったメッセージをそのまま返す
     message = TextMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token, message)
